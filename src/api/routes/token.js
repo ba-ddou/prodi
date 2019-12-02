@@ -1,0 +1,49 @@
+/*
+*
+* token route
+*
+*/
+
+
+const express = require('express');
+const Service = require('../../services/token');
+var jwt = require('jsonwebtoken');
+
+
+
+module.exports = class Token {
+    constructor(container) {
+        //create new express route
+        this.router = express.Router();
+        //create service instance and add it to typedi's container
+        this.service = container.get(Service);
+        //attach get handler
+        this.router.get('/',this.get);
+
+        // attach post handler
+        this.router.post('/', this.post);
+    }
+
+    //get handler
+    get = (req, res) => {
+        var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+        var token = this.service.get(ip);
+        res.end(token);
+        
+    }
+
+    //post handler
+    post = async (req, res) => {
+        var [token,err] = await this.service.post(req.body);
+        // console.log(req.body);
+        if(token){
+            res.end(JSON.stringify({token}));
+        }else{
+            //@ToDo better status code handling
+            res.status = 500;
+            res.end(JSON.stringify({err}));
+        }
+        
+    }
+
+};
