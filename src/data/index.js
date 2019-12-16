@@ -20,11 +20,14 @@ module.exports = class Data {
             var model = models[collection];
             var document = new model(dataObject);
             await document.save();
+            console.log('product',dataObject,'saved succesfully');
+            return false;
         } catch (err) {
             console.log(err);
-            return false;
+            return err;
         }
-        console.log('saved succesfully');
+        
+        
 
     }
 

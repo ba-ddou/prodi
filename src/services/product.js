@@ -23,8 +23,13 @@ module.exports = class Product{
         });
     }
 
-    post(){
-
+    post = async (productObject)=>{
+        console.log(productObject);
+        productObject.count = 0;
+        productObject.sales = 0;
+        var err = await this.data.create('product',productObject);
+        if(!err) return ['product saved successfully',false];
+        else return [false,err];
     }
 
 

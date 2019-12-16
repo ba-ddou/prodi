@@ -37,15 +37,21 @@ module.exports = class Product {
 
 
     //get handler
-    get = async function (req, res) {
-        console.log('request reached handler');
-        var msg = await service.get();
+    get = async (req, res)=>{
+        var msg = await this.service.get();
         console.log('request fulfilled');
         res.send(msg);
     }
 
-    post = async function (req,res) {
-        res.send("product saved successfully");
+    post = async (req,res)=>{
+        var [msg,err] = await this.service.post(req.body);
+        if(msg){
+            res.end(msg);
+        }else{
+            //@ToDo better status code handling
+            res.status = 500;
+            res.end(JSON.stringify({err}));
+        }
     }
 
 };
