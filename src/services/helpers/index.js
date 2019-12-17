@@ -11,6 +11,17 @@ class Helpers {
             return false;
         }
     };
+
+    validateProductObject(productObject){
+        var {name,description,price,category,tags} = productObject;
+        if(name && description && price && category && tags) return true;
+        else return false;
+    }
+
+    parseProductQueryObject(queryObject){
+        
+    }
+
 }
 
 

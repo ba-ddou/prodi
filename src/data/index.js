@@ -32,16 +32,19 @@ module.exports = class Data {
     }
 
     read = async (collection, query) => {
-        var model = null;
+        
         try {
-            model = models[collection];
+            var model = models[collection];
+            let res = await model.find(query);
+            return [res,false];
         } catch (err) {
-            return false;
+            console.log(err);
+            return [false,err];
         }
-
-        let res = await model.findOne(query);
-        return res;
+        
     }
+
+    
 
     update = async () => {
 

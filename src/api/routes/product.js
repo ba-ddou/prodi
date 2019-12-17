@@ -38,12 +38,21 @@ module.exports = class Product {
 
     //get handler
     get = async (req, res)=>{
-        var msg = await this.service.get();
-        console.log('request fulfilled');
-        res.send(msg);
+        console.log(req.query);
+        //asynchronous call to the product service's get function
+        var [data,err] = await this.service.get(req.query);
+        if(data){
+            res.send(data);
+        }else{
+            //@ToDo better status code handling
+            res.status = 500;
+            res.end(JSON.stringify({err}));
+        }
+        
     }
 
     post = async (req,res)=>{
+        //asynchronous call to the product service's post function
         var [msg,err] = await this.service.post(req.body);
         if(msg){
             res.end(msg);
