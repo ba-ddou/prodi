@@ -33,6 +33,10 @@ module.exports = class Product {
         this.router.get('/', this.get);
         //attach auathentication middleware and post handler
         this.router.post('/',this.adminAuthentication,this.post);
+        //attach auathentication middleware and post handler
+        this.router.put('/',this.adminAuthentication,this.put);
+        //attach auathentication middleware and post handler
+        this.router.delete('/',this.adminAuthentication,this.delete);
     }
 
 
@@ -58,6 +62,29 @@ module.exports = class Product {
             res.end(msg);
         }else{
             //@ToDo better status code handling
+            res.status = 500;
+            res.end(JSON.stringify({err}));
+        }
+    }
+
+    put = async (req,res)=>{
+        
+        var [msg,err] = await this.service.put(req.body._id,req.body.productObject);
+        if(msg || msg===0){
+            res.end('successfully updated '+msg);
+        }else{
+            res.status = 500;
+            res.end(JSON.stringify({err}));
+        }
+    }
+
+
+    delete = async (req,res)=>{
+        
+        var [msg,err] = await this.service.delete(req.body._id);
+        if(msg || msg===0){
+            res.end('successfully removed '+msg);
+        }else{
             res.status = 500;
             res.end(JSON.stringify({err}));
         }

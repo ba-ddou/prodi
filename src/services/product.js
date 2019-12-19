@@ -16,13 +16,15 @@ module.exports = class Product {
         this.config = container.get(Config);
         //get data object frm typedi
         this.data = container.get(Data);
+        // setTimeout(this.put, 3000);
     }
+
     get = async (queryObject) => {
         // var query = helpers.parseProductQueryObject(queryObject);
         //asynchronous call to the data object's read function
-        var [data,err] = await this.data.read('product',{});
-        if(data) return [data,false];
-        else return [false,err];
+        var [data, err] = await this.data.read('product', {});
+        if (data) return [data, false];
+        else return [false, err];
 
     }
 
@@ -45,12 +47,28 @@ module.exports = class Product {
     }
 
 
-    put() {
-
+    put = async (_id, productObject) => {
+        var [res, err] = await this.data.update('product', { _id }, productObject);
+        if (!err) {
+            console.log('successfully updated', res.nModified);
+            return [res.nModified,err];
+        }
+        else {
+            console.log(err);
+            return [res,err];
+        }
     }
 
 
-    delete() {
-
+    delete = async (_id) => {
+        var [res, err] = await this.data.remove('product', { _id});
+        if (!err) {
+            console.log('successfully removed', res.deletedCount);
+            return [res.deletedCount,err];
+        }
+        else {
+            console.log(err);
+            return [res,err];
+        }
     }
 }

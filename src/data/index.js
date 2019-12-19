@@ -46,12 +46,28 @@ module.exports = class Data {
 
     
 
-    update = async () => {
+    update = async (collection, query, dataObject) => {
 
+        try {
+            var model = models[collection];
+            let res = await model.updateOne(query, dataObject);
+            return [res,false];
+        } catch (err) {
+            console.log(err);
+            return [false,err];
+        }
+        
     }
 
-    delete = async () => {
-
+    remove = async (collection, query) => {
+        try {
+            var model = models[collection];
+            let res = await model.deleteOne(query);
+            return [res,false];
+        } catch (err) {
+            console.log(err);
+            return [false,err];
+        }
     }
 
 
