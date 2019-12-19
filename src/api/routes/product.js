@@ -1,6 +1,6 @@
 /*
 *
-*product route
+* product route | handle all product related requests
 *
 */
 
@@ -40,7 +40,7 @@ module.exports = class Product {
     }
 
 
-    //get handler
+    //get handler | read from the products collection
     get = async (req, res)=>{
         console.log(req.query);
         //asynchronous call to the product service's get function
@@ -55,6 +55,7 @@ module.exports = class Product {
         
     }
 
+    // post handler | create a new product
     post = async (req,res)=>{
         //asynchronous call to the product service's post function
         var [msg,err] = await this.service.post(req.body);
@@ -67,8 +68,9 @@ module.exports = class Product {
         }
     }
 
+    // put handler | update a product document
     put = async (req,res)=>{
-        
+        //asynchronous call to the product service's put function
         var [msg,err] = await this.service.put(req.body._id,req.body.productObject);
         if(msg || msg===0){
             res.end('successfully updated '+msg);
@@ -78,9 +80,9 @@ module.exports = class Product {
         }
     }
 
-
+    // delete handler | delete a product document
     delete = async (req,res)=>{
-        
+        //asynchronous call to the product service's delete function
         var [msg,err] = await this.service.delete(req.body._id);
         if(msg || msg===0){
             res.end('successfully removed '+msg);

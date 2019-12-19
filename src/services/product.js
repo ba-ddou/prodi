@@ -46,8 +46,12 @@ module.exports = class Product {
 
     }
 
-
+    // update product function
+    // required parameters : 
+    //      -_id (the traget document's _id)
+    //      - productObject (the new data)
     put = async (_id, productObject) => {
+        // call the data module's update function
         var [res, err] = await this.data.update('product', { _id }, productObject);
         if (!err) {
             console.log('successfully updated', res.nModified);
@@ -59,8 +63,11 @@ module.exports = class Product {
         }
     }
 
-
+    // delete product function
+    // required parameters : 
+    //      -_id (the traget document's _id)
     delete = async (_id) => {
+        // call the data module's remove function
         var [res, err] = await this.data.remove('product', { _id});
         if (!err) {
             console.log('successfully removed', res.deletedCount);
