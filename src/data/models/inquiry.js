@@ -14,7 +14,8 @@ var inquirySchema = new mongoose.Schema({
         phone : String,
         message : String,
         products : [String],
-        opened : Boolean
+        opened : Boolean,
+        timestamp : { type : Date, default: Date.now }
     });
 
 

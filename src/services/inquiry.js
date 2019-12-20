@@ -36,7 +36,7 @@ module.exports = class Inquiry {
     post = async (inquiryObject) => {
         //check that inquiry object conforms with the inquiry schema
         if (helpers.validateInquiryObject(inquiryObject)) {
-            console.log(inquiryObject);
+            // console.log(inquiryObject);
             // add the opened property
             inquiryObject.opened = false;
             //asynchronous call to the data object's create function
