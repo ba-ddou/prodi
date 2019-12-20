@@ -18,6 +18,12 @@ class Helpers {
         else return false;
     }
 
+    validateInquiryObject(inquiryObject){
+        var {name,email,phone,message} = inquiryObject;
+        if(name && email && phone && message) return true;
+        else return false;
+    }
+
     parseProductQueryObject(queryObject){
         
     }

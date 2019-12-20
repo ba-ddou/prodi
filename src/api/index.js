@@ -7,7 +7,8 @@
 var express = require('express');
 const Config = require('../config');
 var Token = require('./routes/token');
-var Product = require('./routes/Product');
+var Product = require('./routes/product');
+var Inquiry = require('./routes/inquiry');
 
 
 
@@ -21,7 +22,9 @@ module.exports = class Api{
 
         this.token = container.get(Token);
         this.product = container.get(Product);
+        this.inquiry = container.get(Inquiry);
         this.router.use('/token',this.token.router);
         this.router.use('/product',this.product.router);
+        this.router.use('/inquiry',this.inquiry.router);
     }
 };
