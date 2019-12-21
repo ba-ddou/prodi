@@ -30,13 +30,14 @@ module.exports = class TokenService{
         var {username,password} = payload;
 
         if(username && password){
-            let userObject = await this.data.read('admin',{username});
-            console.log(userObject);
+            let [data,err] = await this.data.read('admin',{username});
+            let userObject = data[0];
             if(userObject){
                 let hash = helpers.hash(password,this.config.passwordHashingSecret);
                 if(hash == userObject.hashedPassword){
-                    let token = jwt.sign({username,
-                        role : "Admin"
+                    let token = jwt.sign({
+                        _id : userObject._id,
+                        username
                     }, this.config.jwtPrivateKey);
                     return [token,false];
                 }else{

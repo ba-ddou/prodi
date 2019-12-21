@@ -58,7 +58,7 @@ module.exports = class Product {
     // post handler | create a new product
     post = async (req,res)=>{
         //asynchronous call to the product service's post function
-        var [msg,err] = await this.service.post(req.body);
+        var [msg,err] = await this.service.post(req.body,req.adminObject);
         if(msg){
             res.end(msg);
         }else{

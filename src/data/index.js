@@ -38,7 +38,6 @@ module.exports = class Data {
             var document = new model(dataObject);
             // save document
             await document.save();
-            console.log('product', dataObject, 'saved succesfully');
             return false;
         } catch (err) {
             console.log(err);

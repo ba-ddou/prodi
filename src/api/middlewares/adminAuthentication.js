@@ -1,6 +1,6 @@
 /*
 *
-*admin authentication middelware
+* admin authentication middelware
 *
 *
 */
@@ -15,7 +15,11 @@ module.exports = (data, jwtPrivateKey) => {
         var token = req.header('token');
         if (typeof token == 'string' && token.length > 0) {
             var decoded = jwt.verify(token, jwtPrivateKey);
-            if (decoded.role && decoded.role == "Admin") next();
+            if (decoded && decoded._id){
+                // console.log('received a request from admin ',decoded);
+                req.adminObject = decoded;
+                next();
+            } 
             else {
                 res.status(403);
                 res.end('{"Error":"access forbiden"}');

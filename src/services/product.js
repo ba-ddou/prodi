@@ -8,15 +8,17 @@
 var Config = require('../config');
 var helpers = require('./helpers');
 var Data = require('../data');
-
+var Event = require('events');
 
 module.exports = class Product {
     constructor(container) {
         //get config object from typedi
         this.config = container.get(Config);
-        //get data object frm typedi
+        //get data object from typedi
         this.data = container.get(Data);
         // setTimeout(this.put, 3000);
+        // get eventPool object from typedi
+        this.eventPool = container.get(Event);
     }
 
     get = async (queryObject) => {
@@ -28,17 +30,26 @@ module.exports = class Product {
 
     }
 
-    post = async (productObject) => {
+    post = async (productObject,adminObject) => {
         //check that product object conforms with the product schema
         if (helpers.validateProductObject(productObject)) {
-            console.log(productObject);
             //add count property with a default of 0
             productObject.count = 0;
             //add sales property with a default of 0
             productObject.sales = 0;
             //asynchronous call to the data object's create function
             var err = await this.data.create('product', productObject);
-            if (!err) return ['product saved successfully', false];
+            if (!err){
+                // dispatch adminactivity event
+                this.eventPool.emit('adminactivity',{
+                    admin : adminObject.username,
+                    targetCollection : 'product',
+                    method : 'post',
+                    document : productObject
+
+                });
+                return ['product saved successfully', false];
+            } 
             else return [false, err];
         } else {
             return [false, 'missing product property'];
