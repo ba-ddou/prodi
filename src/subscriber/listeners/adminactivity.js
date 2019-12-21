@@ -8,11 +8,9 @@
 
 
 
-module.exports = (data)=>{
+module.exports = (logService)=>{
     return async (logObject)=>{
         console.log('*************adminactivity event listener****************');
-        var err = await data.create('log', logObject);
-        if (!err) console.log('log saved successfuly');
-        else console.log('log save failed because ',err);
+        logService.save(logObject);
     }
 }

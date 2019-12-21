@@ -7,12 +7,12 @@
 
 const Event = require('events');
 const map = require('./map');
-const Data = require('../data')
+const log = require('../services/log')
 
 module.exports = class Subscriber{
     constructor(container){
         this.eventPool = container.get(Event);
-        this.data = container.get(Data);
+        this.logService = container.get(log);
         this.init();
     }
 
@@ -20,7 +20,7 @@ module.exports = class Subscriber{
     init(){
         for(let record of map){
             for(let subscriber of record.subscribers){
-                this.eventPool.on(record.event,subscriber(this.data));
+                this.eventPool.on(record.event,subscriber(this.logService));
                 console.log('subscriber is listenning for '+record.event)
             }
         }
