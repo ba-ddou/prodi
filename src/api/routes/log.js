@@ -39,9 +39,10 @@ module.exports = class Log {
 
     //get handler | read from the inquiries collection
     get = async (req, res)=>{
-        console.log(req.query);
+        // console.log(req.query);
+        var query = req.query ? req.query : {};
         //asynchronous call to the inquiry service's get function
-        var [data,err] = await this.service.get();
+        var [data,err] = await this.service.get(query);
         if(data){
             res.send(data);
         }else{

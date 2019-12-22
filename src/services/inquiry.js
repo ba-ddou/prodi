@@ -23,9 +23,9 @@ module.exports = class Inquiry {
 
     // read inquiries function
     // read all documents from the inquiries collection
-    get = async () => {
-
-        var [data, err] = await this.data.read('inquiry', {});
+    get = async (queryObject) => {
+        var query = helpers.parseProductQueryObject(queryObject);
+        var [data, err] = await this.data.read('inquiry', query);
         if (data) return [data, false];
         else return [false, err];
 

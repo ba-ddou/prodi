@@ -20,7 +20,11 @@ module.exports = class Log {
     }
 
     get = async (queryObject) => {
-        var [data,err] = await this.data.read('log', queryObject);
+        
+        var query = helpers.parseProductQueryObject(queryObject);
+        console.log('log service',query);
+        //asynchronous call to the data object's read function
+        var [data,err] = await this.data.read('log', query);
         if (!err) return [data,false]
         else return [false,err]
         

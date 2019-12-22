@@ -22,9 +22,9 @@ module.exports = class Product {
     }
 
     get = async (queryObject) => {
-        // var query = helpers.parseProductQueryObject(queryObject);
+        var query = helpers.parseProductQueryObject(queryObject);
         //asynchronous call to the data object's read function
-        var [data, err] = await this.data.read('product', {});
+        var [data, err] = await this.data.read('product',query);
         if (data) return [data, false];
         else return [false, err];
 

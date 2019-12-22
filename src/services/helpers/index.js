@@ -25,7 +25,16 @@ class Helpers {
     }
 
     parseProductQueryObject(queryObject){
-        
+        var res = {};
+        for(var attribute in queryObject){
+            try{
+                res[attribute] = JSON.parse(queryObject[attribute]);
+            }catch(err){
+                res[attribute] = queryObject[attribute];
+            }
+            
+        }
+        return res;
     }
 
 }

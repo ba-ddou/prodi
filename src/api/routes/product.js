@@ -42,9 +42,9 @@ module.exports = class Product {
 
     //get handler | read from the products collection
     get = async (req, res)=>{
-        console.log(req.query);
+        var query = req.query ? req.query : {};
         //asynchronous call to the product service's get function
-        var [data,err] = await this.service.get(req.query);
+        var [data,err] = await this.service.get(query);
         if(data){
             res.send(data);
         }else{
