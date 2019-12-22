@@ -22,6 +22,7 @@ module.exports = class Product {
     }
 
     get = async (queryObject) => {
+        // parse the queryObject received from the client to a valid JS object
         var query = helpers.parseProductQueryObject(queryObject);
         //asynchronous call to the data object's read function
         var [data, err] = await this.data.read('product',query);
@@ -48,11 +49,11 @@ module.exports = class Product {
                     document : JSON.stringify(productObject)
 
                 });
-                return ['product saved successfully', false];
+                return ['product saved successfully', false,200];
             } 
-            else return [false, err];
+            else return [false, err,500];
         } else {
-            return [false, 'missing product property'];
+            return [false, 'missing product property',400];
         }
 
     }
@@ -65,7 +66,7 @@ module.exports = class Product {
         // read the target document's current data
         var [res, err] = await this.data.read('product', { _id });
         var ogDocument = res ? res[0] : false;
-        console.log(ogDocument);
+        // console.log(ogDocument);
         // call the data module's update function
         var [res, err] = await this.data.update('product', { _id }, productObject);
         if (!err) {

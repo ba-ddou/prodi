@@ -24,7 +24,9 @@ module.exports = class Inquiry {
     // read inquiries function
     // read all documents from the inquiries collection
     get = async (queryObject) => {
+        // parse the queryObject received from the client to a valid JS object
         var query = helpers.parseProductQueryObject(queryObject);
+        //asynchronous call to the data object's read function
         var [data, err] = await this.data.read('inquiry', query);
         if (data) return [data, false];
         else return [false, err];
@@ -42,10 +44,10 @@ module.exports = class Inquiry {
             inquiryObject.opened = false;
             //asynchronous call to the data object's create function
             var err = await this.data.create('inquiry', inquiryObject);
-            if (!err) return ['inquiry saved successfully', false];
-            else return [false, err];
+            if (!err) return ['inquiry saved successfully', false,200];
+            else return [false, err,500];
         } else {
-            return [false, 'missing inquiry property'];
+            return [false, 'missing inquiry property',400];
         }
 
     }
@@ -69,7 +71,7 @@ module.exports = class Inquiry {
                     targetCollection: 'inquiry',
                     method: 'put',
                     ogDocument: ogDocument,
-                    document: JSON.stringify({opened})
+                    document: JSON.stringify({ opened })
 
                 });
                 return [res.nModified, err];

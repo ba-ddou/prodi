@@ -20,7 +20,7 @@ module.exports = class Log {
     }
 
     get = async (queryObject) => {
-        
+        // parse the queryObject received from the client to a valid JS object
         var query = helpers.parseProductQueryObject(queryObject);
         console.log('log service',query);
         //asynchronous call to the data object's read function

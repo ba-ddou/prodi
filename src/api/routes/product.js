@@ -42,6 +42,7 @@ module.exports = class Product {
 
     //get handler | read from the products collection
     get = async (req, res)=>{
+        // get queryString sobject from request object
         var query = req.query ? req.query : {};
         //asynchronous call to the product service's get function
         var [data,err] = await this.service.get(query);
@@ -58,12 +59,12 @@ module.exports = class Product {
     // post handler | create a new product
     post = async (req,res)=>{
         //asynchronous call to the product service's post function
-        var [msg,err] = await this.service.post(req.body,req.adminObject);
+        var [msg,err,statusCode] = await this.service.post(req.body,req.adminObject);
+        res.status(statusCode);
         if(msg){
+            
             res.end(msg);
         }else{
-            //@ToDo better status code handling
-            res.status = 500;
             res.end(JSON.stringify({err}));
         }
     }

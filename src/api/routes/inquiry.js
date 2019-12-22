@@ -44,7 +44,7 @@ module.exports = class Inquiry {
     get = async (req, res)=>{
         var query = req.query ? req.query : {};
         //asynchronous call to the inquiry service's get function
-        var [data,err] = await this.service.get(query);
+        var [data,err,statusCode] = await this.service.get(query);
         if(data){
             res.send(data);
         }else{
@@ -58,12 +58,12 @@ module.exports = class Inquiry {
     // post handler | save a new incoming inquiry
     post = async (req,res)=>{
         //asynchronous call to the inquiry service's post function
-        var [msg,err] = await this.service.post(req.body);
+        var [msg,err,statusCode] = await this.service.post(req.body);
+        console.log(statusCode);
+        res.status(statusCode);
         if(msg){
             res.end(msg);
         }else{
-            //@ToDo better status code handling
-            res.status = 500;
             res.end(JSON.stringify({err}));
         }
     }
