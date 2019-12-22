@@ -8,7 +8,7 @@
 var Config = require('../config');
 var helpers = require('./helpers');
 var Data = require('../data');
-
+var Event = require('events');
 
 module.exports = class Inquiry {
     constructor(container) {
@@ -16,7 +16,8 @@ module.exports = class Inquiry {
         this.config = container.get(Config);
         //get data object frm typedi
         this.data = container.get(Data);
-        // setTimeout(this.put, 3000);
+        // get eventPool object from typedi
+        this.eventPool = container.get(Event);
     }
 
 
@@ -54,12 +55,23 @@ module.exports = class Inquiry {
     // required parameters : 
     //      -_id (the traget document's _id)
     //      - opened (the new data)
-    put = async (_id, opened) => {
+    put = async (_id, opened, adminObject) => {
         if (typeof _id == "string" && typeof opened == "boolean") {
+            // read the target document's current data
+            var [res, err] = await this.data.read('inquiry', { _id });
+            var ogDocument = res ? res[0] : false;
             // call the data module's update function
             var [res, err] = await this.data.update('inquiry', { _id }, { opened });
             if (!err) {
-                console.log('successfully updated', res.nModified);
+                // dispatch adminactivity event
+                this.eventPool.emit('adminactivity', {
+                    admin: adminObject.username,
+                    targetCollection: 'inquiry',
+                    method: 'put',
+                    ogDocument: ogDocument,
+                    document: JSON.stringify({opened})
+
+                });
                 return [res.nModified, err];
             }
             else {

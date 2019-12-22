@@ -71,7 +71,7 @@ module.exports = class Product {
     // put handler | update a product document
     put = async (req,res)=>{
         //asynchronous call to the product service's put function
-        var [msg,err] = await this.service.put(req.body._id,req.body.productObject);
+        var [msg,err] = await this.service.put(req.body._id,req.body.productObject,req.adminObject);
         if(msg || msg===0){
             res.end('successfully updated '+msg);
         }else{
@@ -83,7 +83,7 @@ module.exports = class Product {
     // delete handler | delete a product document
     delete = async (req,res)=>{
         //asynchronous call to the product service's delete function
-        var [msg,err] = await this.service.delete(req.body._id);
+        var [msg,err] = await this.service.delete(req.body._id,req.adminObject);
         if(msg || msg===0){
             res.end('successfully removed '+msg);
         }else{

@@ -45,7 +45,7 @@ module.exports = class Product {
                     admin : adminObject.username,
                     targetCollection : 'product',
                     method : 'post',
-                    document : productObject
+                    document : JSON.stringify(productObject)
 
                 });
                 return ['product saved successfully', false];
@@ -61,11 +61,23 @@ module.exports = class Product {
     // required parameters : 
     //      -_id (the traget document's _id)
     //      - productObject (the new data)
-    put = async (_id, productObject) => {
+    put = async (_id, productObject,adminObject) => {
+        // read the target document's current data
+        var [res, err] = await this.data.read('product', { _id });
+        var ogDocument = res ? res[0] : false;
+        console.log(ogDocument);
         // call the data module's update function
         var [res, err] = await this.data.update('product', { _id }, productObject);
         if (!err) {
-            console.log('successfully updated', res.nModified);
+            // dispatch adminactivity event
+            this.eventPool.emit('adminactivity',{
+                admin : adminObject.username,
+                targetCollection : 'product',
+                method : 'put',
+                ogDocument : ogDocument,
+                document : JSON.stringify(productObject)
+
+            });
             return [res.nModified,err];
         }
         else {
@@ -77,11 +89,21 @@ module.exports = class Product {
     // delete product function
     // required parameters : 
     //      -_id (the traget document's _id)
-    delete = async (_id) => {
+    delete = async (_id,adminObject) => {
+        // read the target document's current data
+        var [res, err] = await this.data.read('product', { _id });
+        var ogDocument = res ? res[0] : false;
         // call the data module's remove function
         var [res, err] = await this.data.remove('product', { _id});
         if (!err) {
-            console.log('successfully removed', res.deletedCount);
+            // dispatch adminactivity event
+            this.eventPool.emit('adminactivity',{
+                admin : adminObject.username,
+                targetCollection : 'product',
+                method : 'delete',
+                ogDocument : ogDocument
+
+            });
             return [res.deletedCount,err];
         }
         else {

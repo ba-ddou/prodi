@@ -71,7 +71,7 @@ module.exports = class Inquiry {
     // put handler | update an inquiry's opened property
     put = async (req,res)=>{
         //asynchronous call to the inquiry service's post function
-        var [msg,err] = await this.service.put(req.body._id,req.body.opened);
+        var [msg,err] = await this.service.put(req.body._id,req.body.opened,req.adminObject);
         if(msg || msg===0){
             res.end(JSON.stringify({response : msg}));
         }else{
