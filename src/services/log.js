@@ -22,10 +22,14 @@ module.exports = class Log {
     get = async (queryObject) => {
         // parse the queryObject received from the client to a valid JS object
         var query = helpers.parseProductQueryObject(queryObject);
-        console.log('log service',query);
+        console.log(query);
         //asynchronous call to the data object's read function
         var [data,err] = await this.data.read('log', query);
-        if (!err) return [data,false]
+        if (!err){
+            // create next page token
+            let nextPageToken = helpers.createNextPageToken(queryObject,data,this.config.jwtPrivateKey);
+            return [{nextPageToken,data},false]
+        } 
         else return [false,err]
         
     }

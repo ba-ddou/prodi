@@ -9,7 +9,7 @@ const Service = require('../../services/log');
 var Config = require('../../config');
 var Data = require('../../data');
 const adminAuthentication = require('../middlewares/adminAuthentication');
-
+const query = require('../middlewares/query');
 
 
 
@@ -25,12 +25,15 @@ module.exports = class Log {
         this.service = container.get(Service);
         //get the admin authentication middleware (inject data and config)
         this.adminAuthentication = adminAuthentication(this.data,this.config.jwtPrivateKey);
+        
+        //get the query middleware (inject config)
+        this.query = query(this.config.jwtPrivateKey);
 
         //attach the admin authentication middleware
         // this.router.use(this.adminAuthentication);
 
         //attach auathentication middleware and get handler
-        this.router.get('/',this.adminAuthentication, this.get);
+        this.router.get('/',this.adminAuthentication,this.query, this.get);
         
         
         

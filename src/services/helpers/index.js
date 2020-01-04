@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-
+var jwt = require('jsonwebtoken');
 
 class Helpers {
 
@@ -36,6 +36,17 @@ class Helpers {
         }
         return res;
     }
+
+
+    createNextPageToken(query,data,jwtPrivateKey){
+        if(data.length>0){
+            let lastDocId = data[data.length-1]._id;
+        console.log(lastDocId);
+        return jwt.sign({ query,lastDocId }, jwtPrivateKey);
+        }else return false;
+        
+    }
+
 
 }
 

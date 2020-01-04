@@ -28,8 +28,12 @@ module.exports = class Inquiry {
         var query = helpers.parseProductQueryObject(queryObject);
         //asynchronous call to the data object's read function
         var [data, err] = await this.data.read('inquiry', query);
-        if (data) return [data, false];
-        else return [false, err];
+        if (!err){
+            // create next page token
+            let nextPageToken = helpers.createNextPageToken(queryObject,data,this.config.jwtPrivateKey);
+            return [{nextPageToken,data},false]
+        } 
+        else return [false,err]
 
     }
 

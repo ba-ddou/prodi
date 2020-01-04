@@ -30,11 +30,15 @@ module.exports = class TokenService{
         var {username,password} = payload;
 
         if(username && password){
+            // retreive admin object from the database
             let [data,err] = await this.data.read('admin',{username});
             let userObject = data[0];
             if(userObject){
+                // hash the received password
                 let hash = helpers.hash(password,this.config.passwordHashingSecret);
+                // compare received password and stored password 
                 if(hash == userObject.hashedPassword){
+                    // generate JWT token
                     let token = jwt.sign({
                         _id : userObject._id,
                         username

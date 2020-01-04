@@ -58,7 +58,7 @@ module.exports = class Data {
             // get the model that corresponds to the target collection
             var model = models[collection];
             // read the entire collection
-            let res = await model.find(query);
+            let res = await model.find(query).sort({_id:-1}).limit(2);
             return [res, false];
         } catch (err) {
             console.log(err);
