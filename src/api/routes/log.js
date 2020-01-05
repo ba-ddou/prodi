@@ -6,8 +6,6 @@
 
 const express = require('express');
 const Service = require('../../services/log');
-var Config = require('../../config');
-var Data = require('../../data');
 const adminAuthentication = require('../middlewares/adminAuthentication');
 const query = require('../middlewares/query');
 
@@ -18,11 +16,12 @@ module.exports = class Log {
         //create new express route
         this.router = express.Router();
         //get config object from typedi
-        this.config = container.get(Config);
+        this.config = container.get("config");
         //get data object from typedi
-        this.data = container.get(Data);
+        this.data = container.get("data");
         //create service instance and add it to typedi's container
         this.service = container.get(Service);
+        container.set("logService",this.service); 
         //get the admin authentication middleware (inject data and config)
         this.adminAuthentication = adminAuthentication(this.data,this.config.jwtPrivateKey);
         

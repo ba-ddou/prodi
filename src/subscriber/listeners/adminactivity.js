@@ -10,7 +10,6 @@
 
 module.exports = (logService)=>{
     return async (logObject)=>{
-        console.log('*************adminactivity event listener****************');
         logService.save(logObject);
     }
 }

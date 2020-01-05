@@ -5,20 +5,18 @@
 */
 
 
-var Config = require('../config');
+
 var helpers = require('./helpers');
-var Data = require('../data');
-var Event = require('events');
 var jwt = require('jsonwebtoken');
 
 module.exports = class Product {
     constructor(container) {
         //get config object from typedi
-        this.config = container.get(Config);
-        //get data object from typedi
-        this.data = container.get(Data);
+        this.config = container.get("config");
+        //get data object frm typedi
+        this.data = container.get("data");
         // get eventPool object from typedi
-        this.eventPool = container.get(Event);
+        this.eventPool = container.get("eventPool");
     }
 
     get = async (queryObject) => {

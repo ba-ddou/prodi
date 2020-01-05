@@ -4,17 +4,19 @@
 *
 */
 
-var Config = require('../config');
+
 var jwt = require('jsonwebtoken');
 var helpers = require('./helpers');
-var Data = require('../data');
 
 
 module.exports = class TokenService{
 
     constructor(container){
-        this.config = container.get(Config);
-        this.data = container.get(Data);
+        //get config object from typedi
+        this.config = container.get("config");
+        //get data object frm typedi
+        this.data = container.get("data");
+
         // this.data.create('admin',{username : 'badou', hashedPassword : helpers.hash('lemmein',this.config.passwordHashingSecret)})
     }
 

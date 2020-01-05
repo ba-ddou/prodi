@@ -5,14 +5,13 @@
 *
 */
 
-const Event = require('events');
+
 const map = require('./map');
-const log = require('../services/log')
 
 module.exports = class Subscriber{
     constructor(container){
-        this.eventPool = container.get(Event);
-        this.logService = container.get(log);
+        this.eventPool = container.get("eventPool");
+        this.logService = container.get("logService"); // the log service is instantiated and added to typedi in routes/log
         this.init();
     }
 

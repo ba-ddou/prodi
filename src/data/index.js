@@ -8,13 +8,12 @@
 
 const mongoose = require('mongoose');
 const models = require('./models');
-const Config = require('../config');
 
 module.exports = class Data {
 
     constructor(container) {
         // get config object from typedi
-        this.config = container.get(Config);
+        this.config = container.get("config");
         // connect to mongoDb
         mongoose.connect(this.config.dbUri, { useNewUrlParser: true });
         var db = mongoose.connection;

@@ -5,19 +5,16 @@
 */
 
 
-var Config = require('../config');
 var helpers = require('./helpers');
-var Data = require('../data');
-var Event = require('events');
 
 module.exports = class Inquiry {
     constructor(container) {
         //get config object from typedi
-        this.config = container.get(Config);
+        this.config = container.get("config");
         //get data object frm typedi
-        this.data = container.get(Data);
+        this.data = container.get("data");
         // get eventPool object from typedi
-        this.eventPool = container.get(Event);
+        this.eventPool = container.get("eventPool");
     }
 
 

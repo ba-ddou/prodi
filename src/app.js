@@ -13,11 +13,19 @@ const Event = require('events')
 const Subscriber = require('./subscriber');
 
 const app = express();
-const config = Container.get(Config);
-const data = Container.get(Data);
+const config = new Config(); // This is a normal object instantiation
+Container.set("config",config);
+
+const data = Container.get(Data); // the purpose of object instantiation with Container.get() 
+                                  // is to inject dependencies throught the class constructor.
+
+Container.set("data",data);       // any class in the container.get() instantiation heirarchy
+                                  // can retrieve the data object using container.get("data").
+
+const eventPool = new Event();
+Container.set("eventPool",eventPool);
 const api = Container.get(Api);
-const eventPool = Container.get(Event);
-const subscriber = Container.get(Subscriber);
+Container.get(Subscriber);
 
 app.use(express.json());
 app.use('/',api.router);
