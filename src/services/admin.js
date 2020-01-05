@@ -7,7 +7,6 @@
 
 
 var helpers = require('./helpers');
-var jwt = require('jsonwebtoken');
 
 module.exports = class Admin {
     constructor(container) {
