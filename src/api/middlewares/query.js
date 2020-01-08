@@ -1,7 +1,7 @@
 /*
 *
-* admin authentication middelware
-*
+* query middleware
+* format a nextPageToken into valid a MongoDb conditions (used by get handlers)
 *
 */
 
@@ -9,10 +9,9 @@ var jwt = require('jsonwebtoken');
 
 
 
-//receives parameters and exports a closure
+//a function that receives data object and jwtProvateKey (dependencies) and exports a middleware closure
 module.exports = (jwtPrivateKey) => {
     return (req, res, next) => {
-        console.log('in query middleware');
         // get query object from the request's query strings
         var query = req.query;
         // check for a pagination token

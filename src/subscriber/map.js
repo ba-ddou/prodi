@@ -12,7 +12,7 @@ const adminactivity = require('./listeners/adminactivity');
 
 module.exports = [
     {
-        event : 'adminactivity',
-        subscribers : [adminactivity]
+        event : 'adminactivity',         // event name
+        subscribers : [adminactivity]    // event listeners that should subscribe to this event
     }
 ]

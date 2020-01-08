@@ -39,11 +39,10 @@ module.exports = class Log {
     }
 
 
-    //get handler | read from the inquiries collection
+    //get handler | read from the logs collection
     get = async (req, res)=>{
-        // console.log(req.query);
         var query = req.query ? req.query : {};
-        //asynchronous call to the inquiry service's get function
+        //asynchronous call to the log service's get function
         var [data,err,statusCode] = await this.service.get(query);
         res.status(statusCode);
         if(data){

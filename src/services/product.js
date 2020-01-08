@@ -19,9 +19,8 @@ module.exports = class Product {
         this.eventPool = container.get("eventPool");
     }
 
+    // read product method
     get = async (queryObject) => {
-
-
         // parse the queryObject received from the client to a valid JS object
         var query = helpers.parseProductQueryObject(queryObject);
         console.log(query);
@@ -36,6 +35,14 @@ module.exports = class Product {
 
     }
 
+    // Create product method
+    // Required parameters : 
+    //      - name (product name)
+    //      - description (product description) 
+    //      - price (product price)
+    //      - category (product category)
+    // Optional parameters : 
+    //      - tags (product tags are keywords used in search, BI ...)
     post = async (productObject, adminObject) => {
         //check that product object conforms with the product schema
         if (helpers.validateProductObject(productObject)) {
@@ -63,7 +70,7 @@ module.exports = class Product {
 
     }
 
-    // update product function
+    // update product method
     // required parameters : 
     //      -_id (the traget document's _id)
     //      - productObject (the new data)
@@ -95,7 +102,7 @@ module.exports = class Product {
 
     }
 
-    // delete product function
+    // delete product method
     // required parameters : 
     //      -_id (the traget document's _id)
     delete = async (_id, adminObject) => {
@@ -120,7 +127,7 @@ module.exports = class Product {
 
                 return [false, err, 500];
             }
-        }else{
+        } else {
             return [false, 'document not found', 404];
         }
     }

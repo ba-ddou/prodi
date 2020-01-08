@@ -1,7 +1,7 @@
 /*
 *
 *
-*
+* Mongoose models
 *
 */
 
@@ -15,6 +15,7 @@ const inquiry = require('./inquiry');
 const log = require('./log');
 
 module.exports = new class Models{
+    // construct a mongoose Models object
     constructor(){
         this.admin = admin;
         this.product = product;

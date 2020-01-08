@@ -34,7 +34,7 @@ module.exports = class Log {
         
     }
 
-    // this function is called save and not post because it should only be invoqued by activity listeners
+    // this function is called save and not post because it should only be invoqued internally | logs can only be created by the system
     save = async (logObject) => {
         var [_id,err] = await this.data.create('log', logObject);
         if (!err) console.log('log saved successfuly');

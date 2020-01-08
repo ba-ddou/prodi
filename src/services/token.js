@@ -20,13 +20,13 @@ module.exports = class TokenService{
         // this.data.create('admin',{username : 'badou', hashedPassword : helpers.hash('lemmein',this.config.passwordHashingSecret)})
     }
 
-    //generate regular user token
+    //Generate regular user token
     get(ipAddress){
         var token = jwt.sign({ ip }, this.config.jwtPrivateKey);
         return token;
     }
 
-    //generate admin token | requires username and password
+    //Generate admin token | requires username and password
     post = async (payload)=>{
 
         var {username,password} = payload;

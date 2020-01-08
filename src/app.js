@@ -13,8 +13,11 @@ const Event = require('events')
 const Subscriber = require('./subscriber');
 
 const app = express();
+// instantiate configs object
 const config = new Config(); // This is a normal object instantiation
-Container.set("config",config);
+// add the config object to typedi's container
+Container.set("config",config);   // any class in the container.get() instantiation heirarchy
+                                  // can retrieve the config object using container.get("config").
 
 const data = Container.get(Data); // the purpose of object instantiation with Container.get() 
                                   // is to inject dependencies throught the class constructor.

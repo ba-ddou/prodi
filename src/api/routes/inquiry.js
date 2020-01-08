@@ -1,6 +1,6 @@
 /*
 *
-* product route | handle all product related requests
+* inquiry route | handle all inquiry related requests
 *
 */
 

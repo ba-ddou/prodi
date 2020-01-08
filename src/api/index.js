@@ -1,6 +1,6 @@
 /*
 *
-*
+* Api entry point | instantiate all api routes
 *
 */
 

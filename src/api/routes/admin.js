@@ -1,6 +1,6 @@
 /*
 *
-* token route
+* admin route
 *
 */
 
@@ -32,9 +32,11 @@ module.exports = class Admin {
 
 
 
-    //post handler
+    //put handler | change password
     put = async (req, res) => {
+        // check for newPassword in the request body
         if (req.body.newPassword) {
+            // call the admin service's put function
             var [data, err,statusCode] = await this.service.put(req.body.newPassword, req.adminObject);
             res.status(statusCode);
             if (!err) {

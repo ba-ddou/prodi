@@ -32,8 +32,9 @@ module.exports = class Token {
         
     }
 
-    //post handler
+    //post handler | admin login
     post = async (req, res) => {
+        // pass the request's body to the service's POST handler
         var [token,err,statusCode] = await this.service.post(req.body);
         res.status(statusCode);
         if(token){

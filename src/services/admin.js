@@ -1,6 +1,6 @@
 /*
 *
-* product service
+* admin service
 *
 */
 
