@@ -35,13 +35,12 @@ module.exports = class Admin {
     //post handler
     put = async (req, res) => {
         if (req.body.newPassword) {
-            var [data, err] = await this.service.put(req.body.newPassword, req.adminObject);
-            // console.log(req.body);
+            var [data, err,statusCode] = await this.service.put(req.body.newPassword, req.adminObject);
+            res.status(statusCode);
             if (!err) {
                 res.end('{"res":"password changed succeffully"}');
             } else {
-                //@ToDo better status code handling
-                res.status(500);
+                
                 res.end(JSON.stringify({ err }));
             }
         } else {

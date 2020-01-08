@@ -28,9 +28,9 @@ module.exports = class Inquiry {
         if (!err){
             // create next page token
             let nextPageToken = helpers.createNextPageToken(queryObject,data,this.config.jwtPrivateKey);
-            return [{nextPageToken,data},false]
+            return [{nextPageToken,data},false,200]
         } 
-        else return [false,err]
+        else return [false,err,500]
 
     }
 
@@ -44,7 +44,7 @@ module.exports = class Inquiry {
             // add the opened property
             inquiryObject.opened = false;
             //asynchronous call to the data object's create function
-            var err = await this.data.create('inquiry', inquiryObject);
+            var [_id,err] = await this.data.create('inquiry', inquiryObject);
             if (!err) return ['inquiry saved successfully', false,200];
             else return [false, err,500];
         } else {
@@ -75,14 +75,14 @@ module.exports = class Inquiry {
                     document: JSON.stringify({ opened })
 
                 });
-                return [res.nModified, err];
+                return [res.nModified, err,200];
             }
             else {
                 console.log(err);
-                return [res, err];
+                return [res, err,500];
             }
         } else {
-            return [false, "unvalid request parameters"];
+            return [false, "unvalid request parameters",400];
         }
 
     }

@@ -28,15 +28,15 @@ module.exports = class Log {
         if (!err){
             // create next page token
             let nextPageToken = helpers.createNextPageToken(queryObject,data,this.config.jwtPrivateKey);
-            return [{nextPageToken,data},false]
+            return [{nextPageToken,data},false,200]
         } 
-        else return [false,err]
+        else return [false,err,500]
         
     }
 
     // this function is called save and not post because it should only be invoqued by activity listeners
     save = async (logObject) => {
-        var err = await this.data.create('log', logObject);
+        var [_id,err] = await this.data.create('log', logObject);
         if (!err) console.log('log saved successfuly');
         else console.log('log save failed because ',err);
     }

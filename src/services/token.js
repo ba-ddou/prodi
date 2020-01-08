@@ -45,18 +45,18 @@ module.exports = class TokenService{
                         _id : userObject._id,
                         username
                     }, this.config.jwtPrivateKey);
-                    return [token,false];
+                    return [token,false,200];
                 }else{
-                    return [false,"invalid username-password combination"]
+                    return [false,"invalid username-password combination",403]
                 }
             }else{
-                return [false,"user does not exist"]
+                return [false,"user not found",404]
             }
             
             
 
         }else{
-            return [false,"missing username or password"]
+            return [false,"missing username or password",400]
         }
 
 

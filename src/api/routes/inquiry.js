@@ -46,11 +46,10 @@ module.exports = class Inquiry {
         var query = req.query ? req.query : {};
         //asynchronous call to the inquiry service's get function
         var [data,err,statusCode] = await this.service.get(query);
+        res.status(statusCode);
         if(data){
             res.send(data);
         }else{
-            //@ToDo better status code handling
-            res.status = 500;
             res.end(JSON.stringify({err}));
         }
         
@@ -72,12 +71,11 @@ module.exports = class Inquiry {
     // put handler | update an inquiry's opened property
     put = async (req,res)=>{
         //asynchronous call to the inquiry service's post function
-        var [msg,err] = await this.service.put(req.body._id,req.body.opened,req.adminObject);
+        var [msg,err,statusCode] = await this.service.put(req.body._id,req.body.opened,req.adminObject);
+        res.status(statusCode);
         if(msg || msg===0){
             res.end(JSON.stringify({response : msg}));
         }else{
-            //@ToDo better status code handling
-            res.status = 500;
             res.end(JSON.stringify({err}));
         }
     }

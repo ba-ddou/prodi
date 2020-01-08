@@ -30,9 +30,9 @@ module.exports = class Product {
         if (!err) {
             // create next page token
             let nextPageToken = helpers.createNextPageToken(queryObject, data, this.config.jwtPrivateKey);
-            return [{ nextPageToken, data }, false]
+            return [{ nextPageToken, data }, false, 200];
         }
-        else return [false, err];
+        else return [false, err, 500];
 
     }
 
@@ -44,14 +44,14 @@ module.exports = class Product {
             //add sales property with a default of 0
             productObject.sales = 0;
             //asynchronous call to the data object's create function
-            var err = await this.data.create('product', productObject);
-            if (!err) {
+            var [_id, err] = await this.data.create('product', productObject);
+            if (_id) {
                 // dispatch adminactivity event
                 this.eventPool.emit('adminactivity', {
                     admin: adminObject.username,
                     targetCollection: 'product',
                     method: 'post',
-                    document: JSON.stringify(productObject)
+                    document: _id
 
                 });
                 return ['product saved successfully', false, 200];
@@ -71,25 +71,28 @@ module.exports = class Product {
         // read the target document's current data
         var [res, err] = await this.data.read('product', { _id });
         var ogDocument = res ? res[0] : false;
-        // console.log(ogDocument);
-        // call the data module's update function
-        var [res, err] = await this.data.update('product', { _id }, productObject);
-        if (!err) {
-            // dispatch adminactivity event
-            this.eventPool.emit('adminactivity', {
-                admin: adminObject.username,
-                targetCollection: 'product',
-                method: 'put',
-                ogDocument: ogDocument,
-                document: JSON.stringify(productObject)
+        if (ogDocument) {
+            // call the data module's update function
+            var [res, err] = await this.data.update('product', { _id }, productObject);
+            if (!err) {
+                // dispatch adminactivity event
+                this.eventPool.emit('adminactivity', {
+                    admin: adminObject.username,
+                    targetCollection: 'product',
+                    method: 'put',
+                    ogDocument: ogDocument,
+                    document: JSON.stringify(productObject)
 
-            });
-            return [res.nModified, err];
+                });
+                return [res.nModified, false, 200];
+            }
+            else {
+                return [res, err, 500];
+            }
+        } else {
+            return [false, 'document not found', 404];
         }
-        else {
-            console.log(err);
-            return [res, err];
-        }
+
     }
 
     // delete product function
@@ -99,22 +102,26 @@ module.exports = class Product {
         // read the target document's current data
         var [res, err] = await this.data.read('product', { _id });
         var ogDocument = res ? res[0] : false;
-        // call the data module's remove function
-        var [res, err] = await this.data.remove('product', { _id });
-        if (!err) {
-            // dispatch adminactivity event
-            this.eventPool.emit('adminactivity', {
-                admin: adminObject.username,
-                targetCollection: 'product',
-                method: 'delete',
-                ogDocument: ogDocument
+        if (ogDocument) {
+            // call the data module's remove function
+            var [res, err] = await this.data.remove('product', { _id });
+            if (!err) {
+                // dispatch adminactivity event
+                this.eventPool.emit('adminactivity', {
+                    admin: adminObject.username,
+                    targetCollection: 'product',
+                    method: 'delete',
+                    ogDocument: ogDocument
 
-            });
-            return [res.deletedCount, err];
-        }
-        else {
-            console.log(err);
-            return [res, err];
+                });
+                return [res.deletedCount, false, 200];
+            }
+            else {
+
+                return [false, err, 500];
+            }
+        }else{
+            return [false, 'document not found', 404];
         }
     }
 }

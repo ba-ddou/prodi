@@ -37,11 +37,10 @@ module.exports = class Admin {
                 targetCollection: 'admin',
                 method: 'put',
             });
-            return [res.nModified, err];
+            return [res.nModified, err,200];
         }
         else {
-            console.log(err);
-            return [res, err];
+            return [res, err,500];
         }
     }
 

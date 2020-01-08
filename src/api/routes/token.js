@@ -34,13 +34,11 @@ module.exports = class Token {
 
     //post handler
     post = async (req, res) => {
-        var [token,err] = await this.service.post(req.body);
-        // console.log(req.body);
+        var [token,err,statusCode] = await this.service.post(req.body);
+        res.status(statusCode);
         if(token){
             res.end(JSON.stringify({token}));
         }else{
-            //@ToDo better status code handling
-            res.status = 500;
             res.end(JSON.stringify({err}));
         }
         

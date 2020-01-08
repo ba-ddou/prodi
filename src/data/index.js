@@ -36,11 +36,12 @@ module.exports = class Data {
             // create new document 
             var document = new model(dataObject);
             // save document
-            await document.save();
-            return false;
+            var res = await document.save();
+            
+            return [res._id,false];
         } catch (err) {
             console.log(err);
-            return err;
+            return [false,err];
         }
 
 

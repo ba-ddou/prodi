@@ -44,12 +44,11 @@ module.exports = class Log {
         // console.log(req.query);
         var query = req.query ? req.query : {};
         //asynchronous call to the inquiry service's get function
-        var [data,err] = await this.service.get(query);
+        var [data,err,statusCode] = await this.service.get(query);
+        res.status(statusCode);
         if(data){
             res.send(data);
         }else{
-            //@ToDo better status code handling
-            res.status = 500;
             res.end(JSON.stringify({err}));
         }
         
