@@ -63,7 +63,7 @@ module.exports = class Product {
         res.status(statusCode);
         if(msg){
             
-            res.end(msg);
+            res.end(JSON.stringify({res:msg}));
         }else{
             res.end(JSON.stringify({err}));
         }
