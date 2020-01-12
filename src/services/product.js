@@ -61,7 +61,7 @@ module.exports = class Product {
                     document: _id
 
                 });
-                return ['product saved successfully', false, 200];
+                return [_id, false, 200];
             }
             else return [false, err, 500];
         } else {

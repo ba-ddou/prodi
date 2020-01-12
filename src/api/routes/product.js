@@ -59,11 +59,11 @@ module.exports = class Product {
     // post handler | create a new product
     post = async (req,res)=>{
         //asynchronous call to the product service's post function
-        var [msg,err,statusCode] = await this.service.post(req.body,req.adminObject);
+        var [_id,err,statusCode] = await this.service.post(req.body,req.adminObject);
         res.status(statusCode);
-        if(msg){
+        if(_id){
             
-            res.end(JSON.stringify({res:msg}));
+            res.end(JSON.stringify({_id}));
         }else{
             res.end(JSON.stringify({err}));
         }
@@ -75,7 +75,7 @@ module.exports = class Product {
         var [msg,err,statusCode] = await this.service.put(req.body._id,req.body.productObject,req.adminObject);
         res.status(statusCode);
         if(msg || msg===0){
-            res.end('successfully updated '+msg);
+            res.end(JSON.stringify({res:'successfully updated '+msg}));
         }else{
             res.end(JSON.stringify({err}));
         }
@@ -87,7 +87,7 @@ module.exports = class Product {
         var [msg,err,statusCode] = await this.service.delete(req.body._id,req.adminObject);
         res.status(statusCode);
         if(msg || msg===0){
-            res.end('successfully removed '+msg);
+            res.end(JSON.stringify({res:'successfully removed '+msg}));
         }else{
             res.end(JSON.stringify({err}));
         }
